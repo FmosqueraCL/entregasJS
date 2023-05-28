@@ -163,7 +163,7 @@ function showOptions() {
         alert('Por favor, elige una opción del 1 al 3.');
         break;
     } 
-  } while (choice != '4');
+  } while (choice != '3');
 }
 showOptions();
 
