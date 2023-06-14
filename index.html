@@ -1,9 +1,71 @@
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>DailyQuest</title>
-</head>
-<body>
-  <script src="js/dailyquest.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>DailyQuest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/9bc787c75d.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="contenedor">
+      <div id="main-menu">
+        <h1><i class="fas fa-dragon"></i> DailyQuest</h1>
+        <button id="crear-personaje"><i class="fas fa-user-plus"></i> Crear personaje</button>
+        <button id="mostrar-galeria"><i class="fas fa-images"></i> Mostrar galería</button>
+      </div>
+      <div id="galeria" class="oculto">
+        <h1><i class="fas fa-images"></i> Galería de personajes</h1>
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Clase</th>
+              <th>Descripción</th>
+              <th><i class="fas fa-fist-raised"></i> Fuerza</th>
+              <th><i class="fas fa-bolt"></i> Destreza</th>
+              <th><i class="fas fa-running"></i> Agilidad</th>
+              <th><i class="fas fa-brain"></i> Inteligencia</th>
+              <th><i class="fas fa-eye"></i> Sabiduría</th>
+              <th><i class="fas fa-dice"></i> Suerte</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button> 
+        <button id="eliminar-personaje"><i class="fas fa-trash-alt"></i> Eliminar personaje</button>
+      </div>
+      <div id="quiz" class="oculto">
+        <h1><i class="fas fa-question-circle"></i> Demuestra tu caracter eligiendo una preferencia</h1>
+        <form id="formulario"></form>
+        <button id="mostrar-dados"><i class="fas fa-dice"></i> Atributos</button> 
+        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button> 
+      </div>
+      <div id="dados" class="oculto">
+        <h2><i class="fas fa-dice"></i> Tienes 3 intentos para que los Dioses piensen tu personaje</h2>
+        <p>Fuerza: <span id="fuerza">0</span></p>
+        <p>Destreza: <span id="destreza">0</span></p>
+        <p>Agilidad: <span id="agilidad">0</span></p>
+        <p>Inteligencia: <span id="inteligencia">0</span></p>
+        <p>Sabiduría: <span id="sabiduria">0</span></p>
+        <p>Suerte: <span id="suerte">0</span></p>
+        <p>Lanzamientos restantes: <span id="lanzamientos">3</span></p> 
+        <button id="lanzar"><i class="fas fa-dice"></i> Lanzar dados</button> 
+        <button id="siguiente-dados"><i class="fas fa-arrow-right"></i> Escribir tu Hoja de Personaje</button> 
+        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button> 
+      </div>
+      <div id="resultado" class="oculto">
+        <div id="hoja-personaje">          
+        </div>
+        <button id="guardar-personaje"><i class="fas fa-save"></i> Guardar personaje</button> 
+        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button>
+      </div>
+    </div>
+    <script src="js/script.js"></script> 
+  </body>
+</html> 
+
+
+
+
+
