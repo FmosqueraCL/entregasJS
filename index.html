@@ -1,71 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>DailyQuest</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/9bc787c75d.js" crossorigin="anonymous"></script>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Palantiri</title>
+  <link rel="stylesheet" href="style.css?v=1">
+  <meta name="viewport" content="width=device-width initial-scale=1">
+  <script src="https://kit.fontawesome.com/9bc787c75d.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
   <body>
-    <div id="contenedor">
-      <div id="main-menu">
-        <h1><i class="fas fa-dragon"></i> DailyQuest</h1>
-        <button id="crear-personaje"><i class="fas fa-user-plus"></i> Crear personaje</button>
-        <button id="mostrar-galeria"><i class="fas fa-images"></i> Mostrar galería</button>
+    <section id="pantalla-titulo" class="pantalla">
+      <h1><i class="fas fa-dragon"></i> Palantiri <i class="fas fa-eye"></i></h1>
+      <button id="boton-empezar"><i class="fas fa-play"></i> Empezar juego</button>
+    </section>
+    <section id="pantalla-lobby" class="pantalla oculta">
+      <h2><i class="fas fa-circle"></i> Lobby</h2>
+      <p><i class="fas fa-info-users"></i> Elige un personaje de la lista o crea uno nuevo. Cada personaje tiene una misión única relacionada con su clase.</p>
+      <div id="cuadricula-personajes">
+        <ul id="lista-personajes"></ul>
       </div>
-      <div id="galeria" class="oculto">
-        <h1><i class="fas fa-images"></i> Galería de personajes</h1>
-        <table id="tabla">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Clase</th>
-              <th>Descripción</th>
-              <th><i class="fas fa-fist-raised"></i> Fuerza</th>
-              <th><i class="fas fa-bolt"></i> Destreza</th>
-              <th><i class="fas fa-running"></i> Agilidad</th>
-              <th><i class="fas fa-brain"></i> Inteligencia</th>
-              <th><i class="fas fa-eye"></i> Sabiduría</th>
-              <th><i class="fas fa-dice"></i> Suerte</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button> 
-        <button id="eliminar-personaje"><i class="fas fa-trash-alt"></i> Eliminar personaje</button>
-      </div>
-      <div id="quiz" class="oculto">
-        <h1><i class="fas fa-question-circle"></i> Demuestra tu caracter eligiendo una preferencia</h1>
-        <form id="formulario"></form>
-        <button id="mostrar-dados"><i class="fas fa-dice"></i> Atributos</button> 
-        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button> 
-      </div>
-      <div id="dados" class="oculto">
-        <h2><i class="fas fa-dice"></i> Tienes 3 intentos para que los Dioses piensen tu personaje</h2>
-        <p>Fuerza: <span id="fuerza">0</span></p>
-        <p>Destreza: <span id="destreza">0</span></p>
-        <p>Agilidad: <span id="agilidad">0</span></p>
-        <p>Inteligencia: <span id="inteligencia">0</span></p>
-        <p>Sabiduría: <span id="sabiduria">0</span></p>
-        <p>Suerte: <span id="suerte">0</span></p>
-        <p>Lanzamientos restantes: <span id="lanzamientos">3</span></p> 
-        <button id="lanzar"><i class="fas fa-dice"></i> Lanzar dados</button> 
-        <button id="siguiente-dados"><i class="fas fa-arrow-right"></i> Escribir tu Hoja de Personaje</button> 
-        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button> 
-      </div>
-      <div id="resultado" class="oculto">
-        <div id="hoja-personaje">          
+      <button id="boton-crear"><i class="fas fa-plus"></i> Crear personaje</button>
+      <button id="boton-eliminar"><i class="fas fa-trash"></i> Eliminar personaje</button>
+      <button id="boton-jugar"><i class="fas fa-dice"></i> Jugar</button>
+    </section>
+    <section id="pantalla-crear" class="pantalla oculta">
+      <h2><i class="fas fa-user-plus"></i> Crear personaje</h2>
+      <p><i class="fas fa-info-circle"></i> 
+        Dale un nombre a tu personaje y elige una de las seis clases disponibles. 
+        Cada clase se beneficia más de ciertos atributos y tiene su estilo de juego y mision propia. 
+        Distribuye 77 puntos entre los siete atributos donde 10 es la habilidad de un hombre comun</p>
+      <div id="formulario-crear">
+        <label for="nombre"><i class="fas fa-signature"></i> Nombre:</label>
+        <input type="text" id="nombre" placeholder="Escribe un nombre...">
+        <label for="clase"><i class="fas fa-user-tag"></i> Elige tu clase : <span id="clase-nombre"></span></label>
+        <div id="carrusel-clases">
+          <button id="boton-izquierda"><i class="fas fa-chevron-left"></i></button>
+          <img src="" alt="" id="avatar-clase">
+          <input type="hidden" id="avatarclase" value="">
+          <button id="boton-derecha"><i class="fas fa-chevron-right"></i></button>
         </div>
-        <button id="guardar-personaje"><i class="fas fa-save"></i> Guardar personaje</button> 
-        <button class="menu-principal"><i class="fas fa-home"></i> Volver al menú</button>
+        <input type="hidden" id="clase" value="guerrero">
+        <div id="atributos">
+          <div class="atributo">
+            <label for="fuerza"><i class="fas fa-fist-raised"></i> Fuerza:</label>
+            <input type="number" id="fuerza" value="0" min="0" max="20" readonly>
+            <button class="boton-sumar"><i class="fas fa-plus"></i></button>
+            <button class="boton-restar"><i class="fas fa-minus"></i></button>
+          </div>
+          <div class="atributo">
+            <label for="constitucion"><i class="fas fa-shield-alt"></i> Constitucion:</label>
+            <input type="number" id="constitucion" value="0" min="0" max="20" readonly>
+            <button class="boton-sumar"><i class="fas fa-plus"></i></button>
+            <button class="boton-restar"><i class="fas fa-minus"></i></button>
+          </div>
+          <div class="atributo">
+            <label for="agilidad"><i class="fas fa-running"></i> Agilidad:</label>
+            <input type="number" id="agilidad" value="0" min="0" max="20" readonly>
+            <button class="boton-sumar"><i class="fas fa-plus"></i></button>
+            <button class="boton-restar"><i class="fas fa-minus"></i></button>
+          </div>
+          <div class="atributo">
+            <label for="destreza"><i class="fas fa-bullseye"></i> Destreza:</label >
+            <input type="number" id="destreza" value="0" min="0" max="20" readonly>
+            <button class="boton-sumar"><i class="fas fa-plus"></i></button>
+            <button class="boton-restar"><i class="fas fa-minus"></i></button>
+          </div>
+          <div class="atributo">
+            <label for="inteligencia"><i class="fas fa-brain"></i> Inteligencia:</label>
+            <input type="number" id="inteligencia" value="0" min="0" max="20" readonly>
+            <button class="boton-sumar"><i class="fas fa-plus"></i></button>
+            <button class="boton-restar"><i class="fas fa-minus"></i></button>
+          </div>
+          <div class="atributo">
+            <label for="sabiduria"><i class="fas fa-book-open"></i> Sabiduria:</label>
+            <input type="number" id="sabiduria" value="0" min="0" max="20" readonly>
+            <button class="boton-sumar"><i class="fa-plus"></i></button>
+            <button class=boton-restar><i class="fa-minus"></i></button>
+            </div>
+          <div class = "atributo">
+            <label for="suerte"><i class="fas fa-star"></i> Suerte:</label>
+            <input type="number" id ="suerte" value ="0" min = "0" max="20" readonly>
+            <button class="boton-sumar"><i class="fa-plus"></i></button>
+            <button class=boton-restar><i class="fa-minus"></i></button>
+            </div>
+          </div>        
+        <p id="puntos-restantes"><i class="fas fa-star"></i> Puntos restantes: 77</p>
+        <button id="boton-guardar"><i class="fas fa-save"></i> Guardar personaje</button>
+        <button id="boton-cancelar"><i class="fas fa-times"></i> Cancelar</button>
       </div>
-    </div>
-    <script src="js/script.js"></script> 
-  </body>
+    </section>  </section>
+    <section id="pantalla-juego" class="pantalla oculta">
+      <h2><i class="fas fa-gamepad"></i> Juego</h2>
+      <p><i class="fas fa-info-circle"></i> Completa tu mision</p>
+      <div id="chat"></div>
+      <input type="text" id="mensaje" placeholder="Escribe tu mensaje..." color="black">
+      <button id="boton-enviar"><i class="fas fa-paper-plane"></i> Enviar</button>
+      <button id="boton-opciones"><i class="fas fa-cog"></i> Opciones</button>
+      <button id="boton-instrucciones"><i class="fas fa-question"></i> Instrucciones</button>  
+    </section>
+    <section id="pantalla-opciones" class="pantalla oculta">
+      <h2><i class="fas fa-sliders-h"></i> Opciones</h2>
+      <p><i class="fas fa-info-circle"></i> Consulta la hoja de tu personaje, donde puedes ver sus atributos, su inventario, su misión, su salud, su energía y sus habilidades. También puedes salir del juego y volver al título o ver las instrucciones de nuevo.</p>
+      <div id="hoja-personaje">
+        <img src="" alt="" id="avatar">
+        <h3 id="nombre-personaje"><i class="fas fa-signature"></i> </h3>
+        <p id="clase-personaje"><i class="fas fa-user-tag"></i> </p>
+        <p id="nivel-personaje"><i class="fas fa-level-up-alt"></i> </p>
+        <ul id="lista-atributos">
+          <li><i class="fas fa-fist-raised"></i> Fuerza: <span id="fuerza-personaje"></span></li>
+          <li><i class="fas fa-shield-alt"></i> Constitucion: <span id="constitucion-personaje"></span></li>
+          <li><i class="fas fa-running"></i> Agilidad: <span id="agilidad-personaje"></span></li>
+          <li><i class="fas fa-bullseye"></i> Destreza: <span id="destreza-personaje"></span></li>
+          <li><i class="fas fa-brain"></i> Inteligencia: <span id="inteligencia-personaje"></span></li>
+          <li><i class="fas fa-book-open"></i> Sabiduria: <span id="sabiduria-personaje"></span></li>
+          <li><i class="fas fa-star"></i> Suerte: <span id="suerte-personaje"></span></li>
+        </ul>        
+        <ul id="inventario-personaje">
+        </ul>
+        <p id="mision-personaje"><i class="fas fa-scroll"></i> </p>
+        <div id="barra-salud">
+          <span><i class="fas fa-heart"></i> HP:</span>
+          <progress id="salud-personaje" value="" max=""></progress>
+          <span id="valor-salud"></span>
+        </div>
+        <div id="barra-energia">
+          <span><i class="fas fa-bolt"></i> SP:</span>
+          <progress id="energia-personaje" value="" max=""></progress>
+          <span id="valor-energia"></span>
+        </div>
+        <ul id="habilidades-personaje">
+        </ul>
+      </div>
+      <button id="boton-volver"><i class="fas fa-arrow-left"></i> Volver</button>
+      <button id="boton-salir"><i class="fas fa-sign-out-alt"></i> Salir</button>
+    </section>
+  <section id="pantalla-instrucciones" class="pantalla oculta">
+    <div id="texto-instrucciones">
+      <h2>Instrucciones</h2>
+      <p>Para interactuar con el narrador y avanzar en tu misión, debes escribir mensajes en el chat en formato de jugador de rol. Esto significa que puedes expresar acciones, emociones y pensamientos como si fueras el personaje que estás jugando.</p>
+      <p>Por ejemplo, si quieres pedir pistas al tabernero sobre cómo avanzar en tu misión, puedes escribir algo como: "*Le pido pistas al tabernero sobre cómo avanzar en mi misión*". El narrador responderá a tu mensaje y te dará información o sugerencias para ayudarte a avanzar en la historia.</p>
+      <p>También puedes usar el chat para tomar decisiones y elegir qué camino seguir. Por ejemplo, si el narrador te presenta dos opciones, puedes escribir algo como: "*Elijo la opción 1 y me dirijo hacia el bosque*". El narrador tomará en cuenta tu elección y te presentará nuevos desafíos y oportunidades basados en ella.</p>
+      <p>Recuerda que puedes expresar tus emociones y pensamientos para darle más profundidad a tu personaje y hacer que la historia sea más interesante. Por ejemplo, puedes escribir algo como: "*Me siento nervioso al entrar en la cueva oscura, pero sé que debo ser valiente para cumplir mi misión*".</p>
+      <p>Usa tu imaginación y creatividad para interactuar con el narrador y avanzar en tu misión. ¡Buena suerte!</p>
+    </div>    
+    <button id="boton-volver2"><i class="fas fa-arrow-left"></i> Volver</button>
+  </section>
+  <script src="js/script.js"></script>
+</body>
 </html> 
-
-
-
-
-
